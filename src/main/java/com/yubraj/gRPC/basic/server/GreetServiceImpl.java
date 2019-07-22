@@ -1,4 +1,4 @@
-package com.yubraj.gRPC.server;
+package com.yubraj.gRPC.basic.server;
 
 import com.proto.greet.GreetRequest;
 import com.proto.greet.GreetResponse;

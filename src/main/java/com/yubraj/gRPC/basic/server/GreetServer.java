@@ -1,4 +1,4 @@
-package com.yubraj.gRPC.server;
+package com.yubraj.gRPC.basic.server;
 
 import io.grpc.ServerBuilder;
 

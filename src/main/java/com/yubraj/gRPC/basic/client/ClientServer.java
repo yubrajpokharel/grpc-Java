@@ -1,4 +1,4 @@
-package com.yubraj.gRPC.client;
+package com.yubraj.gRPC.basic.client;
 
 import com.proto.greet.*;
 import io.grpc.ManagedChannel;
