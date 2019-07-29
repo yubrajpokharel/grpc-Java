@@ -1,8 +1,6 @@
 package com.yubraj.gRPC.calculator;
 
-import com.proto.calculator.CalculatorServiceGrpc;
-import com.proto.calculator.SumRequest;
-import com.proto.calculator.SumResponse;
+import com.proto.calculator.*;
 import io.grpc.stub.StreamObserver;
 
 public class CalculatorServiceImpl extends CalculatorServiceGrpc.CalculatorServiceImplBase {
@@ -15,6 +13,23 @@ public class CalculatorServiceImpl extends CalculatorServiceGrpc.CalculatorServi
         .build();
 
     responseObserver.onNext(sumResponse);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void primeNumber(PrimeNumberRequest request, StreamObserver<PrimeNumberResponse> responseObserver) {
+    Long number = request.getNumber();
+    Long divisor = 2L;
+
+    while (number > 1){
+      if(number % divisor == 0){
+        number /= divisor;
+        responseObserver.onNext(PrimeNumberResponse.newBuilder().setNumber(number).build());
+      } else {
+        divisor += 1;
+      }
+    }
+
     responseObserver.onCompleted();
   }
 }

@@ -13,6 +13,15 @@ message SumResponse {
     int32 sum = 1;
 }
 
+message PrimeNumberRequest{
+    int64 number = 1;
+}
+
+message PrimeNumberResponse {
+    int64 number = 1;
+}
+
 service CalculatorService {
     rpc Sum(SumRequest) returns (SumResponse) {};
+    rpc PrimeNumber(PrimeNumberRequest) returns (stream PrimeNumberResponse) {};
 }
