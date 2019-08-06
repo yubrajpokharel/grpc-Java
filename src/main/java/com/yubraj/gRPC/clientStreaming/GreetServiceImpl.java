@@ -1,29 +1,35 @@
 package com.yubraj.gRPC.clientStreaming;
 
-import com.proto.greet.GreetManyRequest;
-import com.proto.greet.GreetManyResponse;
 import com.proto.greet.GreetServiceGrpc;
+import com.proto.greet.LongGreetRequest;
+import com.proto.greet.LongGreetResponse;
 import io.grpc.stub.StreamObserver;
 
 public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
     @Override
-    public void greetManyTimes(GreetManyRequest request, StreamObserver<GreetManyResponse> responseObserver) {
-        String firstName = request.getGreeting().getFirstName();
-        String lastName = request.getGreeting().getLastName();
+    public StreamObserver<LongGreetRequest> longGreet(StreamObserver<LongGreetResponse> responseObserver) {
+        StreamObserver<LongGreetRequest> requestStreamObserver = new StreamObserver<LongGreetRequest>() {
 
-        try {
-            for (int i = 0; i < 10; i++) {
-                String result = "[" + i + "] Hello : " + firstName + " " + lastName;
-                GreetManyResponse response = GreetManyResponse.newBuilder()
-                    .setResult(result).build();
+            String result = "";
 
-                responseObserver.onNext(response);
-                Thread.sleep(1000);
+            @Override
+            public void onNext(LongGreetRequest value) {
+                result += "Hello [" + value.getGreeting().getFirstName() + " ]";
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }finally {
-            responseObserver.onCompleted();
-        }
+
+            @Override
+            public void onError(Throwable t) {
+                result += "ERROR ";
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("server completed");
+                responseObserver.onNext(LongGreetResponse.newBuilder().setResult(result).build());
+                responseObserver.onCompleted();
+            }
+        };
+
+        return requestStreamObserver;
     }
 }
